@@ -1,0 +1,269 @@
+:root {
+  --bg: #05070a;
+  --panel: #0a0f16;
+  --cyan: #00f0ff;
+  --vio: #bc13fe;
+  --ok: #00ff9d;
+  --warn: #ffcc00;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --sans: "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #c0d4ff;
+  font-family: var(--sans);
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header / Status Bar */
+.status-bar {
+  background: #000;
+  border-bottom: 1px solid #1a2333;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  font: 11px var(--mono);
+  color: #567;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.status-online { color: var(--ok); text-shadow: 0 0 8px rgba(0,255,157,0.5); }
+
+/* Main Layout */
+.app-container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  overflow: hidden;
+}
+
+/* Master Console (Left Panel) */
+.console-panel {
+  background: #080b10;
+  border-right: 1px solid #1a2333;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-family: var(--mono);
+}
+
+.master-identity {
+  margin-bottom: 20px;
+  border: 1px solid var(--cyan);
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+}
+
+.glitch-text {
+  color: var(--cyan);
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.terminal-window {
+  flex: 1;
+  background: #000;
+  border: 1px solid #1a2333;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 12px;
+  color: #89a;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+.log-line { margin: 2px 0; }
+.log-info { color: #89a; }
+.log-success { color: var(--ok); }
+.log-warn { color: var(--warn); }
+.log-sys { color: var(--vio); font-weight: bold; }
+
+.command-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+}
+
+input[type="text"] {
+  background: #0d121a;
+  border: 1px solid #1a2333;
+  color: var(--cyan);
+  padding: 10px;
+  font-family: var(--mono);
+  flex: 1;
+  border-radius: 4px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+
+button {
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 11px;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: var(--cyan);
+  color: #000;
+  box-shadow: 0 0 15px var(--cyan);
+}
+
+button.secondary {
+  border-color: var(--vio);
+  color: var(--vio);
+  background: rgba(188, 19, 254, 0.1);
+}
+button.secondary:hover {
+  background: var(--vio);
+  color: #fff;
+  box-shadow: 0 0 15px var(--vio);
+}
+
+/* Agent Grid (Right Panel) */
+.agent-stage {
+  padding: 30px;
+  overflow-y: auto;
+  background: radial-gradient(circle at 50% 50%, #0b1018 0%, #05070a 100%);
+}
+
+.stage-header {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stage-title {
+  font-size: 24px;
+  font-weight: 200;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+/* Agent Card */
+.agent-card {
+  background: rgba(16, 21, 29, 0.8);
+  border: 1px solid #1a2333;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  animation: spawn 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes spawn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.agent-card:hover {
+  border-color: var(--cyan);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.agent-card.sys-generated {
+  border-top: 2px solid var(--ok);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.card-role {
+  font: 10px var(--mono);
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  margin: 5px 0;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: #89a;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.prompt-preview {
+  background: #000;
+  border: 1px solid #1a2333;
+  padding: 10px;
+  font: 11px var(--mono);
+  color: #678;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.prompt-preview::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(transparent, #000);
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #234;
+  color: #89a;
+  font-size: 10px;
+  padding: 8px;
+}
+.action-btn:hover { border-color: #fff; color: #fff; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .app-container { grid-template-columns: 1fr; }
+  .console-panel { height: 40vh; border-right: none; border-bottom: 1px solid #1a2333; }
+}
