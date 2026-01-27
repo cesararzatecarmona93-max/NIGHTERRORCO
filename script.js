@@ -73,7 +73,83 @@ Genera el reporte final listo para imprimir en PDF. Usa un tono profesional pero
   }
 };
 
+class MatrixRain {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.columns = Math.floor(this.width / 20);
+        this.drops = [];
+        for (let i = 0; i < this.columns; i++) {
+            this.drops[i] = 1;
+        }
+        this.characters = "0123456789ABCDEF@#$%&";
+    }
+
+    draw() {
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        this.ctx.fillRect(0, 0, this.width, this.height);
+
+        this.ctx.fillStyle = '#0F0';
+        this.ctx.font = '15px monospace';
+
+        for (let i = 0; i < this.drops.length; i++) {
+            const text = this.characters.charAt(Math.floor(Math.random() * this.characters.length));
+            const x = i * 20;
+            const y = this.drops[i] * 20;
+
+            // Randomly switch colors for glitch effect
+            if (Math.random() > 0.98) this.ctx.fillStyle = '#FFF';
+            else if (Math.random() > 0.95) this.ctx.fillStyle = '#00F0FF';
+            else this.ctx.fillStyle = '#0F0';
+
+            this.ctx.fillText(text, x, y);
+
+            if (y > this.height && Math.random() > 0.975) {
+                this.drops[i] = 0;
+            }
+            this.drops[i]++;
+        }
+    }
+
+    start() {
+        setInterval(() => this.draw(), 50);
+        window.addEventListener('resize', () => {
+             this.width = window.innerWidth;
+             this.height = window.innerHeight;
+             this.canvas.width = this.width;
+             this.canvas.height = this.height;
+        });
+    }
+}
+
+function typeWriter(element, text, speed = 5, callback = null) {
+    let i = 0;
+    element.textContent = "";
+    function type() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            // Scroll to bottom
+            element.scrollTop = element.scrollHeight;
+            setTimeout(type, speed);
+        } else if (callback) {
+            callback();
+        }
+    }
+    type();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Init Matrix Rain
+  const canvas = document.getElementById('bg-canvas');
+  if (canvas) {
+      new MatrixRain(canvas).start();
+  }
+
   // Transmute Logic
   const transmuteBtn = document.getElementById('transmute-btn');
   const rawInput = document.getElementById('raw-input');
@@ -84,27 +160,29 @@ document.addEventListener('DOMContentLoaded', () => {
   transmuteBtn.addEventListener('click', () => {
     const input = rawInput.value.trim();
     if (!input) {
-      alert("Por favor ingresa una instrucción cruda.");
+      alert("⚠️ ERROR: EMPTY_INPUT_VECTOR");
       return;
     }
 
     // Hide output, show processing
     outputContainer.style.display = 'none';
-    processingIndicator.style.display = 'block';
+    processingIndicator.style.display = 'flex';
     transmuteBtn.disabled = true;
-    transmuteBtn.textContent = 'TRANSMUTANDO...';
+    transmuteBtn.innerHTML = 'PURIFICANDO SEÑAL [S2A]...';
 
     // Simulate S2A Process
     setTimeout(() => {
       processingIndicator.style.display = 'none';
       outputContainer.style.display = 'block';
       transmuteBtn.disabled = false;
-      transmuteBtn.textContent = 'INICIAR TRANSMUTACIÓN [S2A]';
+      transmuteBtn.innerHTML = 'INICIAR TRANSMUTACIÓN [S2A]';
 
       // Mock Master Key Generation
       const masterKey = generateMasterKey(input);
-      masterKeyOutput.textContent = masterKey;
-    }, 2000);
+
+      // Typewriter effect
+      typeWriter(masterKeyOutput, masterKey, 10);
+    }, 2500);
   });
 
   function generateMasterKey(input) {
@@ -137,8 +215,12 @@ Ejecutar la siguiente instrucción purificada con máxima fidelidad:
       const agent = AGENTS[agentKey];
       if (agent) {
         modalTitle.textContent = agent.title;
-        modalContent.textContent = agent.prompt;
+        modalTitle.classList.add('glitch'); // Add glitch effect to modal title
+        modalTitle.setAttribute('data-text', agent.title);
+
+        // Typewriter effect for modal content
         modal.style.display = 'flex';
+        typeWriter(modalContent, agent.prompt, 1);
       }
     });
   });

@@ -4,15 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Protocolo Genesis V2: Arquitectura de Orquestación y Llaves Maestras">
-<title>Genesis V2 — Orquestación de Agentes</title>
+<title>Genesis V2 — BLACK TIER</title>
 <link rel="stylesheet" href="style.css">
+<!-- Optional: Add a google font for extra premium feel -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;700&family=Inter:wght@300;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
+<canvas id="bg-canvas"></canvas>
+
 <header class="header"><div class="wrap brand">
-  <div class="badge">GENESIS V2</div>
+  <div class="badge">GENESIS V2 // BLACK TIER</div>
   <div style="flex:1">
-    <div class="title neon">Arquitectura de Orquestación</div>
-    <p class="sub">Intervención: NIGHTERRORCO • God Mode: ON • Context Engineering: ACTIVE</p>
+    <div class="title glitch" data-text="Arquitectura de Orquestación">Arquitectura de Orquestación</div>
+    <p class="sub">Intervención: NIGHTERRORCO • God Mode: <span style="color:var(--ok)">ONLINE</span> • Context Engineering: <span style="color:var(--cyan)">ACTIVE</span></p>
   </div>
 </div></header>
 
@@ -24,8 +30,8 @@
       <p class="lead">Meta-Prompt God Mode: Transmutación de instrucciones crudas en Llaves Maestras.</p>
 
       <div style="margin-bottom: 20px;">
-        <label style="display:block; color:var(--cyan); margin-bottom:8px; font-weight:bold;">Input de Usuario (Instrucción Cruda)</label>
-        <textarea id="raw-input" rows="4" style="width:100%; background:#0d121a; color:#cde4ff; border:1px solid #1a2333; border-radius:10px; padding:12px; font-family:var(--mono);" placeholder="Ingresa tu instrucción aquí..."></textarea>
+        <label style="display:block; color:var(--cyan); margin-bottom:8px; font-weight:bold; font-family:var(--mono); text-transform:uppercase; letter-spacing:1px;">Input de Usuario [Instrucción Cruda]</label>
+        <textarea id="raw-input" rows="4" placeholder="> INGRESA COMANDO O INTENCIÓN AQUÍ..."></textarea>
       </div>
 
       <button id="transmute-btn" style="width:100%; margin-bottom:20px;">INICIAR TRANSMUTACIÓN [S2A]</button>
@@ -35,7 +41,7 @@
       </div>
 
       <div id="output-container" style="display:none;">
-        <label style="display:block; color:var(--vio); margin-bottom:8px; font-weight:bold;">Master Key Prompt (Optimizado)</label>
+        <label style="display:block; color:var(--vio); margin-bottom:8px; font-weight:bold; font-family:var(--mono); text-transform:uppercase; letter-spacing:1px;">Master Key Prompt [Optimizado]</label>
         <pre id="master-key-output"></pre>
       </div>
     </div>
@@ -45,39 +51,42 @@
       <h2>Sub-Agentes Activos</h2>
       <p class="lead">Orquestación de especialistas de alta fidelidad.</p>
 
-      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin: 0;">
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin: 0;">
 
         <!-- Agent 1 -->
-        <div class="panel third" style="grid-column: span 12; border-color: var(--warn);">
-          <h3 style="color:var(--warn); margin-top:0;">Elite Security Auditor</h3>
+        <div class="panel third" style="grid-column: span 12; border-color: rgba(255, 215, 0, 0.3);">
+          <h3 style="color:var(--gold); margin-top:0; border-color:var(--gold);">Elite Security Auditor</h3>
           <p style="font-size:12px; color:#a9c1ff;">SAST OWASP Top 10 (2025) & Ethical Hacker.</p>
           <div class="kpi">
              <div class="chip warn">SAST</div>
              <div class="chip warn">OWASP</div>
+             <div class="chip warn">BLACK TIER</div>
           </div>
-          <button class="view-protocol-btn" data-agent="security">Ver Protocolo</button>
+          <button class="view-protocol-btn" data-agent="security" style="width:100%; margin-top:16px; border-color:var(--gold); color:var(--gold);">Ver Protocolo</button>
         </div>
 
         <!-- Agent 2 -->
-        <div class="panel third" style="grid-column: span 12; border-color: var(--cyan);">
+        <div class="panel third" style="grid-column: span 12; border-color: rgba(0, 240, 255, 0.3);">
           <h3 style="color:var(--cyan); margin-top:0;">Business Model Strategist</h3>
           <p style="font-size:12px; color:#a9c1ff;">Pricing Consultant & SaaS Innovation.</p>
           <div class="kpi">
              <div class="chip cyan">Pricing</div>
              <div class="chip cyan">SaaS</div>
+             <div class="chip cyan">Growth</div>
           </div>
-          <button class="view-protocol-btn" data-agent="business">Ver Protocolo</button>
+          <button class="view-protocol-btn" data-agent="business" style="width:100%; margin-top:16px;">Ver Protocolo</button>
         </div>
 
         <!-- Agent 3 -->
-        <div class="panel third" style="grid-column: span 12; border-color: var(--ok);">
-          <h3 style="color:var(--ok); margin-top:0;">Legal Auditor "Sentinel"</h3>
+        <div class="panel third" style="grid-column: span 12; border-color: rgba(0, 255, 159, 0.3);">
+          <h3 style="color:var(--ok); margin-top:0; border-color:var(--ok);">Legal Auditor "Sentinel"</h3>
           <p style="font-size:12px; color:#a9c1ff;">LFPDPPP & Código de Comercio (MX).</p>
           <div class="kpi">
              <div class="chip ok">Legal</div>
              <div class="chip ok">Sentinel</div>
+             <div class="chip ok">Protection</div>
           </div>
-          <button class="view-protocol-btn" data-agent="legal">Ver Protocolo</button>
+          <button class="view-protocol-btn" data-agent="legal" style="width:100%; margin-top:16px; border-color:var(--ok); color:var(--ok);">Ver Protocolo</button>
         </div>
 
       </div>
@@ -85,20 +94,20 @@
   </section>
 
   <!-- Modal for Protocol View -->
-  <div id="protocol-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; align-items:center; justify-content:center;">
-    <div class="panel" style="width:90%; max-width:800px; max-height:90vh; overflow-y:auto; border:1px solid var(--cyan); box-shadow:0 0 50px rgba(0,209,255,0.2);">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div id="protocol-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); backdrop-filter:blur(5px); z-index:1000; align-items:center; justify-content:center;">
+    <div class="panel" style="width:90%; max-width:800px; max-height:90vh; display:flex; flex-direction:column; border:1px solid var(--cyan); box-shadow:0 0 50px rgba(0,209,255,0.2);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:12px;">
         <h2 id="modal-title" style="margin:0; color:var(--cyan);">Protocol Title</h2>
-        <button id="close-modal" style="padding:5px 10px;">X</button>
+        <button id="close-modal" style="padding:5px 12px; font-size:10px;">CERRAR [X]</button>
       </div>
-      <pre id="modal-content" style="white-space:pre-wrap;"></pre>
+      <pre id="modal-content" style="white-space:pre-wrap; flex:1; margin:0;"></pre>
     </div>
   </div>
 
 </main>
 
 <footer class="footer">
-  © 2025 NIGHTERRORCO • Protocolo Genesis V2 • <a class="link" href="#">Documentación</a>
+  © 2025 NIGHTERRORCO • Protocolo Genesis V2 • <span style="color:var(--gold)">PREMIUM BLACK ACCESS</span>
 </footer>
 
 <script src="script.js"></script>
