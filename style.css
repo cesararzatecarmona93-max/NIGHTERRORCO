@@ -1,0 +1,292 @@
+:root {
+    --bg-color: #000000;
+    --text-color: #e0e0e0;
+    --accent-gold: #ffd700;
+    --accent-cyan: #00f0ff;
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --font-ui: 'Inter', sans-serif;
+    --font-code: 'Fira Code', monospace;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-ui);
+    overflow: hidden; /* For canvas background */
+}
+
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* CRT Scanline Overlay */
+.scanline-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0) 50%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.2)
+    );
+    background-size: 100% 4px;
+    z-index: 9999;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.brand-title {
+    font-family: var(--font-code);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.brand-subtitle {
+    font-size: 0.8rem;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+main {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Agent Selection / Sidebar */
+.agent-sidebar {
+    width: 250px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.agent-card {
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.agent-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-cyan);
+}
+
+.agent-card.active {
+    background: rgba(0, 240, 255, 0.1);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.agent-name {
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.agent-role {
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+/* Terminal / Workspace */
+.terminal-window {
+    flex: 1;
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.terminal-header {
+    background: #1a1a1a;
+    padding: 10px 15px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-gold);
+}
+
+.terminal-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: var(--font-code);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #d4d4d4;
+}
+
+.user-input-area {
+    padding: 15px;
+    background: #151515;
+    border-top: 1px solid #333;
+    display: flex;
+    gap: 10px;
+}
+
+#user-input {
+    flex: 1;
+    background: #000;
+    border: 1px solid #333;
+    color: var(--accent-cyan);
+    font-family: var(--font-code);
+    padding: 10px;
+    border-radius: 6px;
+    outline: none;
+}
+
+#user-input:focus {
+    border-color: var(--accent-cyan);
+}
+
+button.run-btn {
+    background: var(--accent-cyan);
+    color: #000;
+    border: none;
+    padding: 0 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+button.run-btn:hover {
+    background: #00c2cf;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+/* Animations */
+.streaming-text {
+    border-right: 2px solid var(--accent-cyan);
+    animation: blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--accent-cyan) }
+}
+
+.phase-container {
+    margin-top: 20px;
+    border: 1px dashed #333;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.phase-title {
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.phase-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+    font-size: 0.85rem;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.phase-item.active {
+    opacity: 1;
+    color: var(--accent-cyan);
+}
+
+.output-block {
+    background: #050505;
+    border-left: 3px solid var(--accent-cyan);
+    padding: 15px;
+    margin: 10px 0;
+    white-space: pre-wrap;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #111;
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
