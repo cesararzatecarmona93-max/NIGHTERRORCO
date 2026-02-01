@@ -1,0 +1,261 @@
+:root {
+  --bg-color: #000000;
+  --text-color: #e6f1ff;
+  --accent-gold: #ffd700;
+  --accent-cyan: #00f0ff;
+  --glass-bg: rgba(16, 21, 29, 0.8);
+  --glass-border: rgba(0, 240, 255, 0.2);
+  --font-mono: 'Fira Code', monospace;
+  --font-sans: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+/* CRT Scanline Overlay */
+body::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+/* Matrix Rain Canvas */
+#matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.15; /* Subtle background */
+}
+
+/* Layout */
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Above canvas */
+  position: relative;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background: var(--glass-bg);
+  border-right: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.sidebar-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 10px;
+}
+
+.brand {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.agent-list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.agent-item {
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.agent-item:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: var(--accent-cyan);
+}
+
+.agent-item.active {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.agent-name {
+  color: var(--accent-cyan);
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.agent-role {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+/* Main Terminal Area */
+.terminal-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6); /* Darker overlay */
+}
+
+.terminal-window {
+  flex: 1;
+  border: 1px solid var(--glass-border);
+  background: rgba(10, 10, 10, 0.8);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
+  position: relative;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+.message {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.message.user {
+  color: #fff;
+  border-left: 3px solid var(--accent-cyan);
+  padding-left: 10px;
+}
+
+.message.system {
+  color: var(--accent-gold);
+  border-left: 3px solid var(--accent-gold);
+  padding-left: 10px;
+}
+
+.typing-cursor::after {
+  content: '▋';
+  animation: blink 1s step-start infinite;
+  color: var(--accent-cyan);
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Input Area */
+.input-area {
+  display: flex;
+  gap: 10px;
+  height: 50px;
+}
+
+#user-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  color: #fff;
+  padding: 10px 15px;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+#user-input:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+#send-btn {
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  padding: 0 25px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+#send-btn:hover {
+  background: var(--accent-gold);
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Header within terminal for active agent info */
+.active-agent-header {
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.active-agent-title {
+  color: var(--accent-gold);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.sysvec-badge {
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 240, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 10px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
