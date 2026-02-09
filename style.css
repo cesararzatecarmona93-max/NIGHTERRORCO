@@ -1,0 +1,175 @@
+:root {
+  --bg: #0b0f14;
+  --panel: #10151d;
+  --cyan: #00d1ff;
+  --vio: #a24cff;
+  --grid: #0e1622;
+  --ok: #2de3a7;
+  --warn: #ffbe3b;
+  --ink: #e6f1ff;
+  --mono: 'Fira Code', monospace;
+  --sans: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  height: 100vh;
+  overflow: hidden;
+}
+
+#genesis-interface {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 60px 1fr 30px;
+  height: 100vh;
+  gap: 1px;
+  background: var(--grid);
+}
+
+.header {
+  grid-column: 1 / -1;
+  background: var(--panel);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--grid);
+  justify-content: space-between;
+}
+
+.brand {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--grid);
+  overflow-y: auto;
+  padding: 20px 0;
+}
+
+.agent-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+  font-family: var(--mono);
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.agent-item:hover {
+  background: rgba(0, 209, 255, 0.05);
+  opacity: 1;
+}
+
+.agent-item.active {
+  background: rgba(0, 209, 255, 0.1);
+  border-left-color: var(--cyan);
+  color: var(--cyan);
+  opacity: 1;
+}
+
+.terminal-window {
+  background: rgba(11, 15, 20, 0.95);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#matrix-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.terminal-content {
+  position: relative;
+  z-index: 1;
+  padding: 30px;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.6;
+  height: 100%;
+  overflow-y: auto;
+  color: #a9c1ff;
+}
+
+.prompt-line {
+  color: var(--ok);
+  margin-bottom: 10px;
+}
+
+.output-text {
+  white-space: pre-wrap;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: var(--cyan);
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.footer {
+  grid-column: 1 / -1;
+  background: var(--panel);
+  border-top: 1px solid var(--grid);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #567;
+}
+
+.status-badge {
+  background: rgba(45, 227, 167, 0.1);
+  color: var(--ok);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2433;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2b3a4d;
+}
+
+/* Agent Specific Highlights */
+.agent-role {
+  color: var(--vio);
+  font-size: 11px;
+  display: block;
+  margin-top: 4px;
+}
