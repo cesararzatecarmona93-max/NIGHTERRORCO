@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-color: #000000;
+    --text-color: #e0e0e0;
+    --accent-gold: #ffd700;
+    --accent-cyan: #00f0ff;
+    --glass-bg: rgba(10, 10, 10, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --font-ui: 'Inter', sans-serif;
+    --font-code: 'Fira Code', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Background Canvas */
+#matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* CRT Overlay */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+    ), linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.06),
+        rgba(0, 255, 0, 0.02),
+        rgba(0, 0, 255, 0.06)
+    );
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.8;
+}
+
+/* Main Container */
+.container {
+    position: relative;
+    z-index: 10;
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    display: flex;
+    gap: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+    padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-right: 1px solid var(--glass-border);
+    padding-right: 20px;
+}
+
+.brand {
+    font-family: var(--font-code);
+    font-size: 1.2rem;
+    color: var(--accent-cyan);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.agent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.agent-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    padding: 12px;
+    text-align: left;
+    font-family: var(--font-code);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.agent-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.agent-btn.active {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.header-panel {
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.agent-title {
+    font-family: var(--font-code);
+    font-size: 1.5rem;
+    color: var(--accent-cyan);
+    margin-bottom: 5px;
+}
+
+.agent-role {
+    font-size: 0.9rem;
+    color: #888;
+    font-family: var(--font-ui);
+}
+
+.terminal-window {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #ddd;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.terminal-text {
+    white-space: pre-wrap;
+}
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background-color: var(--accent-cyan);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #000;
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-cyan);
+}

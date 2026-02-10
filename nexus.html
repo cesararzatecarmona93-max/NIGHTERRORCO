@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS-ZERO | Sovereignty Deck</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* AESTHETIC: PRESTIGE DARK/GOLD [Fuente: 301, 370] */
+        body { background-color: #050505; color: #e5e5e5; font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.1); /* Gold tint */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .text-gold { color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        .bg-gold { background-color: #D4AF37; }
+        .btn-primary {
+            background: linear-gradient(135deg, #D4AF37 0%, #B4941F 100%);
+            color: #000; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .input-field {
+            background: #0a0a0a; border: 1px solid #333; color: #fff;
+            transition: border-color 0.3s;
+        }
+        .input-field:focus { border-color: #D4AF37; outline: none; }
+    </style>
+</head>
+<body class="min-h-screen p-6 flex flex-col gap-6">
+
+    <!-- HEADER: IDENTITY INJECTION [Fuente: 332] -->
+    <header class="flex justify-between items-center glass-panel p-6 rounded-xl">
+        <div>
+            <div class="flex items-center gap-3">
+                <i data-lucide="hexagon" class="text-gold h-8 w-8"></i>
+                <h1 class="text-2xl font-bold tracking-wider">NEXUS<span class="text-gold">ZERO</span></h1>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">PROTOCOL: SIGMA-SUPREMA v3.0 // OPERATOR: L5 AUTH</p>
+        </div>
+        <div class="text-right">
+            <div id="status-indicator" class="flex items-center gap-2 text-green-400 text-sm font-mono">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                SYSTEM ACTIVE
+            </div>
+            <div id="merkle-root" class="text-[10px] text-gray-600 font-mono mt-1">HASH: WAITING_INPUT...</div>
+        </div>
+    </header>
+
+    <!-- CORE GRID -->
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+
+        <!-- LEFT: LOGIC ENGINE (PoT) [Fuente: 167, 303] -->
+        <section class="lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col gap-6">
+            <h2 class="text-gold font-bold flex items-center gap-2">
+                <i data-lucide="cpu"></i> LOGIC-TO-CASH ENGINE
+            </h2>
+
+            <!-- Inputs -->
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs uppercase text-gray-500 font-bold">Inversión Mensual (USD)</label>
+                    <input type="number" id="investment" value="1950" class="input-field w-full p-3 rounded mt-1">
+                </div>
+                <div>
+                    <label class="text-xs uppercase text-gray-500 font-bold">Horas Ahorradas / Mes</label>
+                    <input type="range" id="hours" min="0" max="200" value="40" class="w-full accent-[#D4AF37] mt-2">
+                    <div class="flex justify-between text-xs text-gold">
+                        <span>0h</span>
+                        <span id="hours-display">40h</span>
+                        <span>200h</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs uppercase text-gray-500 font-bold">Valor Hora Humana (USD)</label>
+                    <input type="number" id="hourly-rate" value="150" class="input-field w-full p-3 rounded mt-1">
+                </div>
+            </div>
+
+            <!-- Action -->
+            <button onclick="calculatePoT()" class="btn-primary w-full p-4 rounded text-sm">
+                Ejecutar Protocolo PoT
+            </button>
+
+            <!-- Results Panel -->
+            <div class="bg-black/40 p-4 rounded border border-gray-800">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-400 text-sm">ROI Proyectado</span>
+                    <span id="roi-display" class="text-2xl font-bold text-white">0%</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400 text-sm">Capital Recuperado (Anual)</span>
+                    <span id="savings-display" class="text-gold font-mono">$0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CENTER: VISUALIZATION (Chart.js) -->
+        <section class="lg:col-span-5 glass-panel rounded-xl p-6 relative">
+            <h2 class="text-gray-400 text-sm font-bold mb-4 flex items-center gap-2">
+                <i data-lucide="trending-up"></i> PROYECCIÓN DE SOBERANÍA (6 MESES)
+            </h2>
+            <canvas id="projectionChart"></canvas>
+
+            <!-- Paywall Trigger [Fuente: 370] -->
+            <div id="paywall-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 hidden rounded-xl z-10">
+                <i data-lucide="lock" class="text-gold h-12 w-12 mb-4"></i>
+                <h3 class="text-xl font-bold text-white">ACCESO ENTERPRISE REQUERIDO</h3>
+                <p class="text-gray-400 text-sm mt-2 mb-6">La exportación y proyección avanzada requieren Nivel L5.</p>
+                <button onclick="unlockEnterprise()" class="btn-primary px-8 py-3 rounded text-xs">
+                    Desbloquear Activo
+                </button>
+            </div>
+        </section>
+
+        <!-- RIGHT: GOVERNANCE SHIELD [Fuente: 266, 301] -->
+        <section class="lg:col-span-3 flex flex-col gap-6">
+            <!-- Audit Log -->
+            <div class="glass-panel rounded-xl p-6 flex-1 overflow-hidden flex flex-col">
+                <h2 class="text-gray-400 text-sm font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="shield-check"></i> AUDITORÍA FORENSE
+                </h2>
+                <div id="audit-log" class="flex-1 overflow-y-auto font-mono text-[10px] space-y-2 text-gray-500">
+                    <!-- Logs injected via JS -->
+                </div>
+            </div>
+
+            <!-- Kill Switch -->
+            <div class="glass-panel rounded-xl p-6 border-red-900/30">
+                <h2 class="text-red-500 text-xs font-bold mb-2 flex items-center gap-2">
+                    <i data-lucide="skull"></i> KILL SWITCH LEGAL
+                </h2>
+                <p class="text-[10px] text-gray-400 mb-4">
+                    Cláusula de Daños Estatutarios ($150k USD) activa por defecto en exportaciones.
+                </p>
+                <button onclick="triggerKillSwitch()" class="w-full border border-red-500/50 text-red-500 hover:bg-red-500/10 p-2 rounded text-xs transition-colors">
+                    Generar Acta de Infracción
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // INIT LUCIDE ICONS
+        lucide.createIcons();
+
+        // STATE MANAGEMENT
+        let chartInstance = null;
+
+        // --- MOTOR PoT (PROGRAM-OF-THOUGHTS) [Fuente: 167] ---
+        function calculatePoT() {
+            // 1. Extracción de Variables
+            const investment = parseFloat(document.getElementById('investment').value);
+            const hours = parseFloat(document.getElementById('hours').value);
+            const rate = parseFloat(document.getElementById('hourly-rate').value);
+
+            // 2. Lógica Determinista (Zero Hallucinations)
+            const monthlySavings = hours * rate;
+            const netMonthly = monthlySavings - investment;
+            const annualNet = netMonthly * 12;
+            const roi = ((netMonthly / investment) * 100).toFixed(2);
+
+            // 3. Verdad Técnica (UI Update)
+            document.getElementById('roi-display').innerText = `${roi}%`;
+            document.getElementById('roi-display').className = roi > 0 ? "text-2xl font-bold text-green-400" : "text-2xl font-bold text-red-400";
+            document.getElementById('savings-display').innerText = annualNet.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+            // 4. Auditoría (Merkle Simulation)
+            logAudit(`CALC_EXEC: INV=${investment} | SAV=${monthlySavings} | HASH=${generateHash()}`);
+
+            // 5. Update Chart
+            updateChart(investment, monthlySavings);
+        }
+
+        // --- VISUALIZATION ENGINE ---
+        function updateChart(cost, savings) {
+            const ctx = document.getElementById('projectionChart').getContext('2d');
+
+            // Proyección a 6 meses
+            const labels = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
+            const dataCost = Array(6).fill(cost);
+            const dataSavings = labels.map((_, i) => savings * (1 + (i * 0.1))); // Simula compounding del 10%
+
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Costo Operativo (Legacy)',
+                            data: dataCost,
+                            borderColor: '#ef4444',
+                            borderDash: [5, 5],
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Valor Recuperado (Sigma)',
+                            data: dataSavings,
+                            borderColor: '#D4AF37',
+                            backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#9ca3af' } } },
+                    scales: {
+                        y: { grid: { color: '#333' }, ticks: { color: '#6b7280' } },
+                        x: { grid: { display: false }, ticks: { color: '#6b7280' } }
+                    }
+                }
+            });
+        }
+
+        // --- GOVERNANCE & SECURITY [Fuente: 168, 266] ---
+        function logAudit(action) {
+            const logPanel = document.getElementById('audit-log');
+            const timestamp = new Date().toISOString();
+            const entry = document.createElement('div');
+            entry.innerHTML = `<span class="text-gold">[${timestamp}]</span> ${action}`;
+            logPanel.prepend(entry);
+
+            // Simulación de Merkle Root Update
+            document.getElementById('merkle-root').innerText = `ROOT MERKLE: 0x${generateHash().substring(0, 24)}... (IMMUTABLE)`;
+        }
+
+        function generateHash() {
+            return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        }
+
+        function triggerKillSwitch() {
+            logAudit("⚠️ KILL_SWITCH_ACTIVATED: CLAUSE_150K_PENALTY_GENERATED");
+            alert("PROTOCOLO LEGAL ACTIVADO: Se ha generado un hash forense de esta sesión. Cualquier uso no autorizado activará la cláusula de $150,000 USD.");
+        }
+
+        // --- UX LOGIC ---
+        document.getElementById('hours').addEventListener('input', (e) => {
+            document.getElementById('hours-display').innerText = `${e.target.value}h`;
+        });
+
+        function unlockEnterprise() {
+            alert("Acceso L5 Concedido. Bienvenido, Arquitecto.");
+            document.getElementById('paywall-overlay').classList.add('hidden');
+        }
+
+        // Init
+        logAudit("SYS_BOOT: SIGMA_L5_ELITE KERNEL LOADED");
+        calculatePoT();
+    </script>
+</body>
+</html>
