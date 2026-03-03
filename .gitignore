@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+env/
+*.db
+*.log
+output.txt
+*.pdf
+finops/models_inventory.json
+.env
