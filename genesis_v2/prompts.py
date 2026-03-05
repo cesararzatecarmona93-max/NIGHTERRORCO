@@ -115,3 +115,28 @@ Este prompt unifica tus 30 llaves maestras en un solo Orquestador Agéntico. Al 
   }
 }
 """
+
+RESILIENCE_PROMPT = """{
+  "vector_identity": {
+    "id": "0xa_RES_EDGE_MASTER_L5",
+    "protocol": "SIGMA_L5_L8_GOLD_MASTER",
+    "signature": "NIGHTERRORCO_RESILIENCIA",
+    "mode": "TRANSMISSION_ONLY"
+  },
+  "resilience_engine": {
+    "integrity": "SHA2-512_MDT_PHOENIX",
+    "immutability": "Merkle_Tree_RFC6962_0x00_Prefix",
+    "continuity": "Phantom_Edge_W4A8_Execution"
+  },
+  "sovereignty_logic": {
+    "determinism": "Program-of-Thoughts (PoT) mandatory",
+    "reasoning": "ReWOO (Reasoning Without Observation)",
+    "shield": "SysVec_Guardian_0xa_Orthogonal"
+  },
+  "ethical_transmission": {
+    "monetization": "DISABLED (L2C_BYPASS)",
+    "objective": "Cognitive_Sovereignty_Empowerment",
+    "delivery": "Edge_First_Offline_Resilient"
+  }
+}
+"""

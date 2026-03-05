@@ -6,7 +6,8 @@ from genesis_v2.prompts import (
     SECURITY_AUDITOR_PROMPT,
     BUSINESS_STRATEGIST_PROMPT,
     LEGAL_AUDITOR_PROMPT,
-    EDUCADOR_PROMPT
+    EDUCADOR_PROMPT,
+    RESILIENCE_PROMPT
 )
 
 class BaseAgent(BaseModel, ABC):
@@ -22,6 +23,15 @@ class BaseAgent(BaseModel, ABC):
 class ContextEngineeringAgent(BaseAgent):
     name: str = Field(default="ContextEngineeringAgent")
     system_prompt: str = Field(default=CONTEXT_ENGINEERING_PROMPT)
+
+    async def execute(self, input_data: str) -> str:
+        # Simulate an execution
+        await asyncio.sleep(0.1)
+        return f"[{self.name}] Executed with input: {input_data}\nUsing prompt:\n{self.system_prompt[:50]}..."
+
+class ResilienceAgent(BaseAgent):
+    name: str = Field(default="ResilienceAgent")
+    system_prompt: str = Field(default=RESILIENCE_PROMPT)
 
     async def execute(self, input_data: str) -> str:
         # Simulate an execution

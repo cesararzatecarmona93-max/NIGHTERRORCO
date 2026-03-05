@@ -5,7 +5,8 @@ from genesis_v2.agents import (
     SecurityAuditorAgent,
     BusinessStrategistAgent,
     LegalAuditorAgent,
-    EducadorAgent
+    EducadorAgent,
+    ResilienceAgent
 )
 
 def get_agent(agent_name: str):
@@ -14,7 +15,8 @@ def get_agent(agent_name: str):
         "security": SecurityAuditorAgent,
         "business": BusinessStrategistAgent,
         "legal": LegalAuditorAgent,
-        "educador": EducadorAgent
+        "educador": EducadorAgent,
+        "resilience": ResilienceAgent
     }
     agent_class = agents.get(agent_name)
     if agent_class is None:
@@ -23,7 +25,7 @@ def get_agent(agent_name: str):
 
 async def async_main():
     parser = argparse.ArgumentParser(description="Genesis V2 Agent CLI")
-    parser.add_argument("--agent", required=True, choices=["context", "security", "business", "legal", "educador"], help="The agent to execute.")
+    parser.add_argument("--agent", required=True, choices=["context", "security", "business", "legal", "educador", "resilience"], help="The agent to execute.")
     parser.add_argument("--input", required=True, help="The input data for the agent.")
     args = parser.parse_args()
 
