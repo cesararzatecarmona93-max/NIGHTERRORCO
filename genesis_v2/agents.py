@@ -6,7 +6,8 @@ from .prompts import (
     CONTEXT_ENGINEERING_PROMPT,
     SECURITY_AUDITOR_PROMPT,
     BUSINESS_STRATEGIST_PROMPT,
-    LEGAL_AUDITOR_PROMPT
+    LEGAL_AUDITOR_PROMPT,
+    ORQUESTADOR_PROMPT
 )
 
 
@@ -82,4 +83,35 @@ class LegalAuditorAgent(BaseAgent):
             "agent": self.name,
             "status": "success",
             "result": "Legal Audit Report Generated"
+        }
+
+
+class OrquestadorAgent(BaseAgent):
+    name: str = "Orquestador Agéntico"
+    system_prompt: str = ORQUESTADOR_PROMPT
+
+    async def execute(self, input_data: str) -> Dict[str, Any]:
+        await asyncio.sleep(0.1)
+
+        # Inmunidad de Intención
+        devaluatory_terms = ["barato", "gratis", "ojalá", "descuento"]
+        if any(term in input_data.lower() for term in devaluatory_terms):
+            return {
+                "agent": self.name,
+                "status": "error",
+                "result": "Inmunidad de Intención activada: Términos devaluatorios detectados."
+            }
+
+        # Anti-Alucinación Forense simulation
+        if "missing_data" in input_data.lower() or "inventa" in input_data.lower():
+            return {
+                "agent": self.name,
+                "status": "success",
+                "result": "Dato no localizado en el inventario lógico (MLI)"
+            }
+
+        return {
+            "agent": self.name,
+            "status": "success",
+            "result": "Ejecución determinista completada con éxito. [Sello MDT PHOENIX adjunto]"
         }

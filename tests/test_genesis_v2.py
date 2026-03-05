@@ -3,7 +3,8 @@ from genesis_v2.agents import (
     ContextEngineeringAgent,
     SecurityAuditorAgent,
     BusinessStrategistAgent,
-    LegalAuditorAgent
+    LegalAuditorAgent,
+    OrquestadorAgent
 )
 
 
@@ -58,3 +59,32 @@ async def test_legal_auditor_agent_error():
     assert result["agent"] == "Legal Auditor Sentinel"
     assert result["status"] == "error"
     assert "ERROR DE INGESTA: Solo proceso documentos legales" in result["result"]
+
+
+@pytest.mark.asyncio
+async def test_orquestador_agent_success():
+    agent = OrquestadorAgent()
+    assert agent.name == "Orquestador Agéntico"
+    assert "NIVEL: Arquitecto de Sistemas Senior" in agent.system_prompt
+    result = await agent.execute("Proporciona una clase de termodinámica.")
+    assert result["agent"] == "Orquestador Agéntico"
+    assert result["status"] == "success"
+    assert "Sello MDT PHOENIX" in result["result"]
+
+
+@pytest.mark.asyncio
+async def test_orquestador_agent_missing_data():
+    agent = OrquestadorAgent()
+    result = await agent.execute("Tell me about missing_data points in 1845.")
+    assert result["agent"] == "Orquestador Agéntico"
+    assert result["status"] == "success"
+    assert result["result"] == "Dato no localizado en el inventario lógico (MLI)"
+
+
+@pytest.mark.asyncio
+async def test_orquestador_agent_devaluatory_terms():
+    agent = OrquestadorAgent()
+    result = await agent.execute("Quiero un curso barato y gratis, ojalá con descuento.")
+    assert result["agent"] == "Orquestador Agéntico"
+    assert result["status"] == "error"
+    assert "Términos devaluatorios detectados" in result["result"]

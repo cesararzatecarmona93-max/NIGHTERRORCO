@@ -6,7 +6,8 @@ from genesis_v2.agents import (
     ContextEngineeringAgent,
     SecurityAuditorAgent,
     BusinessStrategistAgent,
-    LegalAuditorAgent
+    LegalAuditorAgent,
+    OrquestadorAgent
 )
 
 async def main():
@@ -15,7 +16,7 @@ async def main():
         "--agent",
         type=str,
         required=True,
-        choices=["context", "security", "business", "legal"],
+        choices=["context", "security", "business", "legal", "orquestador"],
         help="The agent to execute"
     )
     parser.add_argument(
@@ -35,6 +36,8 @@ async def main():
         agent = BusinessStrategistAgent()
     elif args.agent == "legal":
         agent = LegalAuditorAgent()
+    elif args.agent == "orquestador":
+        agent = OrquestadorAgent()
     else:
         raise ValueError(f"Unknown agent type: {args.agent}")
 
