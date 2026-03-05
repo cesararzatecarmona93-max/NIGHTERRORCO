@@ -4,7 +4,8 @@ from genesis_v2.agents import (
     ContextEngineeringAgent,
     SecurityAuditorAgent,
     BusinessStrategistAgent,
-    LegalAuditorAgent
+    LegalAuditorAgent,
+    EducadorAgent
 )
 from genesis_cli import get_agent
 
@@ -44,11 +45,21 @@ async def test_legal_auditor_agent():
     assert "test legal" in output
     assert agent.system_prompt.startswith("# SYSTEM ROLE: AGENTE AUDITOR LEGAL")
 
+@pytest.mark.asyncio
+async def test_educador_agent():
+    agent = EducadorAgent()
+    assert agent.name == "EducadorAgent"
+    output = await agent.execute("test educador")
+    assert "[EducadorAgent]" in output
+    assert "test educador" in output
+    assert agent.system_prompt.startswith("NIVEL: Arquitecto de Sistemas Senior / Educador de Alta Fidelidad.")
+
 def test_get_agent_factory():
     assert isinstance(get_agent("context"), ContextEngineeringAgent)
     assert isinstance(get_agent("security"), SecurityAuditorAgent)
     assert isinstance(get_agent("business"), BusinessStrategistAgent)
     assert isinstance(get_agent("legal"), LegalAuditorAgent)
+    assert isinstance(get_agent("educador"), EducadorAgent)
 
     with pytest.raises(ValueError):
         get_agent("invalid_agent")
