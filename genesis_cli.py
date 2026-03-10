@@ -2,6 +2,8 @@ import argparse
 import asyncio
 import sys
 
+from pydantic import ValidationError
+
 from genesis_v2.agents import (
     ContextEngineeringAgent,
     SecurityAuditorAgent,
@@ -30,6 +32,14 @@ async def main():
         result = await agent.execute()
         # Ensure purely technical and functional output per protocol 0x0_MIN_EXEC_ENGINE
         print(result)
+    except ValidationError as e:
+        for error in e.errors():
+            msg = error.get("msg", "")
+            if msg.startswith("Value error, "):
+                print(msg[len("Value error, "):])
+            else:
+                print(msg)
+        sys.exit(1)
     except Exception as e:
         print(str(e))
         sys.exit(1)
