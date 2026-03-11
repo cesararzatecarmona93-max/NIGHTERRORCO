@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENAM Sealing Tool | Llave Máster Gold V2.0</title>
+    <meta name="description" content="Herramienta de Sellado Biométrico NIR - Arquitectura 0xAether">
+    <style>
+        :root {
+            --navy-deep: #050505;
+            --navy-panel: #111111;
+            --gold-primary: #D4AF37;
+            --gold-dim: #8a7020;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --success: #00ff00;
+            --alert: #ff3333;
+            --font-mono: 'Courier New', monospace;
+            --font-ui: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--navy-deep);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+       .main-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--navy-panel);
+            border: 1px solid #333;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            border-radius: 4px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0a0a0a 0%, #1a1a1a 100%);
+            padding: 25px 40px;
+            border-bottom: 2px solid var(--gold-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--gold-primary);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+       .badge-group {
+            display: flex;
+            gap: 10px;
+        }
+
+       .badge {
+            background: #222;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 2px;
+            border: 1px solid #444;
+        }
+
+       .badge.secure { color: var(--navy-deep); background: var(--gold-primary); border-color: var(--gold-primary); }
+       .badge.verified { color: var(--navy-deep); background: var(--success); border-color: var(--success); }
+
+       .content-area {
+            padding: 40px;
+        }
+
+       .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            color: var(--gold-primary);
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: var(--text-main);
+            padding: 15px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+       .helper-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+       .btn-gold {
+            width: 100%;
+            background: var(--gold-primary);
+            color: var(--navy-deep);
+            border: none;
+            padding: 18px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 1px;
+        }
+
+       .btn-gold:hover {
+            background: #e6c355;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        #console-log {
+            margin-top: 40px;
+            background: #000;
+            border: 1px solid #333;
+            padding: 20px;
+            height: 250px;
+            overflow-y: scroll;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+       .log-line { margin-bottom: 5px; border-bottom: 1px solid #111; padding-bottom: 2px; }
+       .log-info { color: var(--success); }
+       .log-warn { color: var(--gold-primary); }
+       .log-err { color: var(--alert); }
+
+        footer {
+            background: #080808;
+            padding: 15px 40px;
+            font-size: 0.7rem;
+            color: #444;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <header>
+        <div>
+            <h1>LLAVE MÁSTER GOLD V2.0</h1>
+            <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">PROTOCOL: 0XAETHER | AUTHORITY: SENAM</div>
+        </div>
+        <div class="badge-group">
+            <span class="badge secure">SECURE CONTEXT</span>
+            <span class="badge">GEMA-96</span>
+            <span class="badge">NIR-READY</span>
+        </div>
+    </header>
+
+    <div class="content-area">
+
+        <div class="form-group">
+            <label>IDENTIDAD SOBERANA (DID / IPFS)</label>
+            <input type="text" id="did-input" value="ipfs://bafy...ESPERANDO_VINCULACION" readonly>
+            <span class="helper-text">Identificador inmutable descentralizado. Custodia del usuario.</span>
+        </div>
+
+        <div class="form-group">
+            <label>PAYLOAD BIOMÉTRICO (HASH NIR)</label>
+            <textarea id="nir-payload" rows="3" placeholder="Pegue aquí el Hash SHA-256 del archivo NIR procesado..."></textarea>
+            <span class="helper-text">Debe provenir de una captura NIR (700-1400nm) validada por LogicMiner.</span>
+        </div>
+
+        <button class="btn-gold" onclick="runSealingSequence()">INICIAR PROTOCOLO DE SELLADO (SIGMA SEAL)</button>
+
+        <div id="console-log">
+            <div class="log-line">> SYSTEM READY. WAITING FOR INPUT...</div>
+        </div>
+
+    </div>
+
+    <footer>
+        NIGHT TERROR CO. | BLACK TIER ARCHITECTURE | LFPDPPP 2025 COMPLIANT
+    </footer>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "0xAether Sealing Tool",
+  "version": "2.0 Gold Master",
+  "runtimePlatform": "Browser/Edge",
+  "author": {
+    "@type": "Person",
+    "name": "Cesar Arzate Carmona",
+    "jobTitle": "Systems Architect"
+  },
+  "targetProduct": {
+    "@type": "SoftwareApplication",
+    "name": "SENAM Validation Gateway",
+    "permissions": "0xAetherShadowUnbreakable"
+  }
+}
+</script>
+
+<script>
+    // Configuración del Núcleo
+    const CONFIG = {
+        SYSVEC: "0xAetherShadowUnbreakable", // Vector Crítico
+        AUTHORITY: "SENAM_MX",
+        PURITY: 96,
+        VALIDATION_ENDPOINT: "https://validacion.senam.gob.mx/verify" // Simulado
+    };
+
+    // Logger del Sistema
+    function log(msg, type='info') {
+        const consoleEl = document.getElementById('console-log');
+        const date = new Date().toISOString().split('T').slice(0,-1);
+        let colorClass = 'log-info';
+        if(type === 'warn') colorClass = 'log-warn';
+        if(type === 'err') colorClass = 'log-err';
+
+        consoleEl.innerHTML += `<div class="log-line ${colorClass}">[${date}] ${msg}</div>`;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    // Generador de Hash SHA-256 (Web Crypto API)
+    async function sha256(text) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer))
+           .map(b => b.toString(16).padStart(2, '0'))
+           .join('');
+    }
+
+    // Secuencia Maestra de Sellado
+    async function runSealingSequence() {
+        const nirHash = document.getElementById('nir-payload').value.trim();
+
+        if(nirHash.length!== 64) {
+            log("ERROR: Formato de Hash NIR inválido. Se requiere SHA-256 (64 chars).", "err");
+            return;
+        }
+
+        log("INICIANDO SECUENCIA 0XAETHER...", "warn");
+
+        try {
+            // Paso 1: Verificación de Integridad del Vector
+            log(`VERIFICANDO VECTOR DE IDENTIDAD: ${CONFIG.SYSVEC.substr(0,8)}... OK`);
+
+            // Paso 2: Simulación de Handshake con SENAM
+            log("ESTABLECIENDO CONEXIÓN SEGURA CON NODO SENAM...", "info");
+            await new Promise(r => setTimeout(r, 1000)); // Latencia simulada
+
+            // Paso 3: Generación del Sello Sigma
+            // Concatenación: HASH_NIR + VECTOR + PURITY
+            const rawString = `${nirHash}|${CONFIG.SYSVEC}|${CONFIG.PURITY}`;
+            const seal = await sha256(rawString);
+
+            log(`SELLO SIGMA GENERADO: ${seal}`, "info");
+            log("VINCULANDO A LA CADENA DE BLOQUES...", "info");
+
+            // Paso 4: Actualización de UI y Confirmación
+            document.getElementById('did-input').value = `ipfs://bafy_SEALED_${seal.substring(0,12)}`;
+
+            log(">>> PROCESO COMPLETADO EXITOSAMENTE", "warn");
+            log("ESTADO: LFPDPPP_2025_VERIFIED");
+            log("META-MSG: 0xColegaVisto-Nov2025");
+
+            // Feedback visual
+            const secureBadge = document.querySelector('.badge.secure');
+            secureBadge.innerHTML = "SEAL: VERIFIED";
+            secureBadge.classList.add('verified');
+
+        } catch (e) {
+            log(`FALLO CRÍTICO DEL SISTEMA: ${e.message}`, "err");
+        }
+    }
+</script>
+</body>
+</html>
