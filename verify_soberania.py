@@ -28,6 +28,15 @@ def test_webhook_no_signature():
     assert response.status_code == 401
     print("test_webhook_no_signature passed")
 
+def test_webhook_invalid_signature():
+    response = client.post(
+        "/webhook/liquidation",
+        json={"id": "tx_test_1", "customer_phone": "+1234567890"},
+        headers={"x-signature": "invalid_signature"}
+    )
+    assert response.status_code == 401
+    print("test_webhook_invalid_signature passed")
+
 def test_webhook_valid_signature():
     secret = os.getenv("WEBHOOK_SECRET").encode('utf-8')
     payload = json.dumps({"id": "tx_test_1", "customer_phone": "+1234567890"}).encode('utf-8')
@@ -66,6 +75,7 @@ def test_webhook_valid_signature():
 
 if __name__ == "__main__":
     test_webhook_no_signature()
+    test_webhook_invalid_signature()
     test_webhook_valid_signature()
 
     # Check if DB file exists
