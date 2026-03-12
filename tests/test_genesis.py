@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from genesis_v2.agents import (
+from genesis_unified import (
     ContextEngineeringAgent,
     SecurityAuditorAgent,
     BusinessStrategistAgent,
@@ -10,7 +10,7 @@ from genesis_v2.agents import (
 
 def test_context_engineering_agent_init():
     agent = ContextEngineeringAgent(input_data="test input")
-    assert agent.name == "Context Engineering Agent"
+    assert agent.name == "Agente de Ingenieria de Contexto"
     assert "System Vector" in agent.system_prompt or "SYSVEC" in agent.system_prompt or "SysVec" in agent.system_prompt
 
 @pytest.mark.asyncio
@@ -22,7 +22,7 @@ async def test_context_engineering_agent_execute():
 
 def test_security_auditor_agent_init():
     agent = SecurityAuditorAgent(input_data="test input")
-    assert agent.name == "Security Auditor"
+    assert agent.name == "Auditor de Seguridad Black"
     assert "OWASP" in agent.system_prompt
 
 @pytest.mark.asyncio
@@ -33,7 +33,7 @@ async def test_security_auditor_agent_execute():
 
 def test_business_strategist_agent_init():
     agent = BusinessStrategistAgent(input_data="test input")
-    assert agent.name == "Business Strategist"
+    assert agent.name == "Arquitecto de Silos de Ventas"
     assert "Pricing" in agent.system_prompt
 
 @pytest.mark.asyncio
@@ -44,7 +44,7 @@ async def test_business_strategist_agent_execute():
 
 def test_legal_auditor_agent_init_valid():
     agent = LegalAuditorAgent(input_data="Este es un contrato valido")
-    assert agent.name == "Legal Auditor Sentinel"
+    assert agent.name == 'Agente Auditor Legal "Sentinel"'
 
 def test_legal_auditor_agent_init_invalid():
     with pytest.raises(ValidationError) as exc_info:
