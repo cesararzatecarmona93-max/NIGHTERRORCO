@@ -162,12 +162,12 @@ document.getElementById('metrics-out').textContent = JSON.stringify(delta, null,
 function startCountdown(){
   const el = document.getElementById('countdown');
   const fmt = n => String(n).padStart(2,'0');
+  let target = new Date();
+  // Calcula próximo martes a las 10:00
+  target.setDate(target.getDate() + ((2 - target.getDay() + 7) % 7 || 7));
+  target.setHours(10, 0, 0, 0);
   const tick = () => {
     const now = new Date();
-    let target = new Date(now);
-    // Calcula próximo martes a las 10:00
-    target.setDate(target.getDate() + ((2 - target.getDay() + 7) % 7 || 7));
-    target.setHours(10, 0, 0, 0);
     
     const ms = target - now;
     if(ms <= 0) { el.textContent = "¡Comenzando ahora!"; return; }
