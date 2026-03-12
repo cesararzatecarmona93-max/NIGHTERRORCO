@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from genesis_v2.agents import (
+from genesis_unified import (
     ContextEngineeringAgent,
     SecurityAuditorAgent,
     BusinessStrategistAgent,
