@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from genesis_v2.agents import (
     ContextEngineeringAgent,
     SecurityAuditorAgent,
-    BusinessStrategistAgent,
+    SalesSiloArchitectAgent,
     LegalAuditorAgent
 )
 
@@ -21,7 +21,7 @@ async def main():
     agent_map = {
         "context": ContextEngineeringAgent,
         "security": SecurityAuditorAgent,
-        "business": BusinessStrategistAgent,
+        "business": SalesSiloArchitectAgent,
         "legal": LegalAuditorAgent
     }
 
