@@ -20,7 +20,7 @@ class BaseAgent(BaseModel):
 
 
 class ContextEngineeringAgent(BaseAgent):
-    name: str = Field(default="Context Engineering Agent")
+    name: str = Field(default="Agente de Ingenieria de Contexto")
     system_prompt: str = Field(default=CONTEXT_ENGINEERING_PROMPT)
 
     async def execute(self) -> str:
@@ -30,7 +30,7 @@ class ContextEngineeringAgent(BaseAgent):
 
 
 class SecurityAuditorAgent(BaseAgent):
-    name: str = Field(default="Security Auditor")
+    name: str = Field(default="Auditor de Seguridad Black")
     system_prompt: str = Field(default=SECURITY_AUDITOR_PROMPT)
 
     async def execute(self) -> str:
@@ -39,8 +39,8 @@ class SecurityAuditorAgent(BaseAgent):
         return f"Executed {self.name} on input: {self.input_data}"
 
 
-class BusinessStrategistAgent(BaseAgent):
-    name: str = Field(default="Business Strategist")
+class SalesSiloArchitectAgent(BaseAgent):
+    name: str = Field(default="Arquitecto de Silos de Ventas")
     system_prompt: str = Field(default=BUSINESS_STRATEGIST_PROMPT)
 
     async def execute(self) -> str:
@@ -50,7 +50,7 @@ class BusinessStrategistAgent(BaseAgent):
 
 
 class LegalAuditorAgent(BaseAgent):
-    name: str = Field(default="Legal Auditor Sentinel")
+    name: str = Field(default='AGENTE AUDITOR LEGAL "SENTINEL"')
     system_prompt: str = Field(default=LEGAL_AUDITOR_PROMPT)
 
     @model_validator(mode='after')
