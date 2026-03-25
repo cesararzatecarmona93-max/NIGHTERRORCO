@@ -55,7 +55,8 @@ class LegalAuditorAgent(BaseAgent):
 
     @model_validator(mode='after')
     def validate_input(self) -> 'LegalAuditorAgent':
-        if "contrato" not in self.input_data.lower() and "legal" not in self.input_data.lower():
+        lower_input = self.input_data.lower()
+        if "contrato" not in lower_input and "legal" not in lower_input:
             raise ValueError("ERROR DE INGESTA: Solo proceso documentos legales para auditoría.")
         return self
 
