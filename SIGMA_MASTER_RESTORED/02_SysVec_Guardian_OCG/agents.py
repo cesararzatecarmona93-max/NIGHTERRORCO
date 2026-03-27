@@ -1,0 +1,66 @@
+import asyncio
+
+from pydantic import BaseModel, Field, model_validator
+
+from genesis_v2.prompts import (
+    CONTEXT_ENGINEERING_PROMPT,
+    SECURITY_AUDITOR_PROMPT,
+    BUSINESS_STRATEGIST_PROMPT,
+    LEGAL_AUDITOR_PROMPT
+)
+
+
+class BaseAgent(BaseModel):
+    name: str
+    system_prompt: str
+    input_data: str
+
+    async def execute(self) -> str:
+        raise NotImplementedError("Subclasses must implement the execute method")
+
+
+class ContextEngineeringAgent(BaseAgent):
+    name: str = Field(default="Agente de Ingenieria de Contexto")
+    system_prompt: str = Field(default=CONTEXT_ENGINEERING_PROMPT)
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"[SysVec: 0xAetherShadowUnbreakable] Executed {self.name} on input: {self.input_data}"
+
+
+class SecurityAuditorAgent(BaseAgent):
+    name: str = Field(default="Auditor de Seguridad Black")
+    system_prompt: str = Field(default=SECURITY_AUDITOR_PROMPT)
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"Executed {self.name} on input: {self.input_data}"
+
+
+class SalesSiloArchitectAgent(BaseAgent):
+    name: str = Field(default="Arquitecto de Silos de Ventas")
+    system_prompt: str = Field(default=BUSINESS_STRATEGIST_PROMPT)
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"Executed {self.name} on input: {self.input_data}"
+
+
+class LegalAuditorAgent(BaseAgent):
+    name: str = Field(default='AGENTE AUDITOR LEGAL "SENTINEL"')
+    system_prompt: str = Field(default=LEGAL_AUDITOR_PROMPT)
+
+    @model_validator(mode='after')
+    def validate_input(self) -> 'LegalAuditorAgent':
+        lower_input = self.input_data.lower()
+        if "contrato" not in lower_input and "legal" not in lower_input:
+            raise ValueError("ERROR DE INGESTA: Solo proceso documentos legales para auditoría.")
+        return self
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"Executed {self.name} on input: {self.input_data}"
