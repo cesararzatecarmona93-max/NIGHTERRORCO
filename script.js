@@ -102,7 +102,8 @@ let processingTimeout = null;
 function init() {
     const list = document.getElementById('agent-list');
 
-    // Populate Sidebar
+    // Populate Sidebar using a DocumentFragment to minimize reflows
+    const fragment = document.createDocumentFragment();
     Object.values(AGENTS).forEach(agent => {
         const li = document.createElement('li');
         li.className = 'agent-item';
@@ -112,8 +113,9 @@ function init() {
             <span class="agent-role">${agent.role}</span>
         `;
         li.onclick = () => selectAgent(agent.id);
-        list.appendChild(li);
+        fragment.appendChild(li);
     });
+    list.appendChild(fragment);
 
     // Select first agent by default
     selectAgent('context_engineer');
