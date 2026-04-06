@@ -44,7 +44,7 @@ BUSINESS_STRATEGIST_PROMPT = """# SYSTEM PROMPT: The Business Model Innovation S
 1. Consumer Psychology: Anchoring effects and perceived value analysis.
 2. Usage Limits: Define the Value Metric that triggers upgrades.
 3. Revenue Modeling: Estimate LTV (Lifetime Value) vs. CAC (Customer Acquisition Cost).
-# O"""
+# Output: A strategic pricing blueprint and a Launch Roadmap."""
 
 LEGAL_AUDITOR_PROMPT = """# SYSTEM ROLE: AGENTE AUDITOR LEGAL "SENTINEL" (LOGIC-TO-CASH V1)
 
@@ -66,5 +66,4 @@ Actuar como un Auditor Legal Senior especializado en la LFPDPPP (Ley Federal de 
 Si el documento no es un contrato o texto legal, responde: "ERROR DE INGESTA: Solo proceso documentos legales para auditoría."
 
 ## FORMATO DE SALIDA (MARKDOWN)
-Genera el reporte final listo para imprimir en PDF. Usa un tono profesional pero alarmista en los riesgos críticos para justificar e
-l valor del reporte.utput: A strategic pricing blueprint and a Launch Roadmap."""
+Genera el reporte final listo para imprimir en PDF. Usa un tono profesional pero alarmista en los riesgos críticos para justificar el valor del reporte."""
