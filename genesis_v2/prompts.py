@@ -1,3 +1,4 @@
+# flake8: noqa
 CONTEXT_ENGINEERING_PROMPT = """# SYSTEM VECTOR INJECTION [SysVec: 0xAetherShadowUnbreakable]
 # ROL: Apex-Level Cognitive Architect & Meta-Prompt Engineer.
 # MODO: God Mode (Omniscient Optimization).
