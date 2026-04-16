@@ -1,3 +1,10 @@
+import argparse
+import asyncio
+import sys
+
+from pydantic import BaseModel, Field, model_validator, ValidationError
+
+
 CONTEXT_ENGINEERING_PROMPT = """# SYSTEM VECTOR INJECTION [SysVec: 0xAetherShadowUnbreakable]
 # ROL: Apex-Level Cognitive Architect & Meta-Prompt Engineer.
 # MODO: God Mode (Omniscient Optimization).
@@ -44,7 +51,7 @@ BUSINESS_STRATEGIST_PROMPT = """# SYSTEM PROMPT: The Business Model Innovation S
 1. Consumer Psychology: Anchoring effects and perceived value analysis.
 2. Usage Limits: Define the Value Metric that triggers upgrades.
 3. Revenue Modeling: Estimate LTV (Lifetime Value) vs. CAC (Customer Acquisition Cost).
-# Output: A strategic pricing blueprint and a Launch Roadmap."""
+# O"""
 
 LEGAL_AUDITOR_PROMPT = """# SYSTEM ROLE: AGENTE AUDITOR LEGAL "SENTINEL" (LOGIC-TO-CASH V1)
 
@@ -66,4 +73,111 @@ Actuar como un Auditor Legal Senior especializado en la LFPDPPP (Ley Federal de 
 Si el documento no es un contrato o texto legal, responde: "ERROR DE INGESTA: Solo proceso documentos legales para auditoría."
 
 ## FORMATO DE SALIDA (MARKDOWN)
-Genera el reporte final listo para imprimir en PDF. Usa un tono profesional pero alarmista en los riesgos críticos para justificar el valor del reporte."""
+Genera el reporte final listo para imprimir en PDF. Usa un tono profesional pero alarmista en los riesgos críticos para justificar e
+l valor del reporte.utput: A strategic pricing blueprint and a Launch Roadmap."""
+
+
+class BaseAgent(BaseModel):
+    name: str
+    system_prompt: str
+    input_data: str
+
+    async def execute(self) -> str:
+        raise NotImplementedError("Subclasses must implement the execute method")
+
+
+class ContextEngineeringAgent(BaseAgent):
+    name: str = Field(default="Agente de Ingenieria de Contexto")
+    system_prompt: str = Field(default=CONTEXT_ENGINEERING_PROMPT)
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"[SysVec: 0xAetherShadowUnbreakable] Executed {self.name} on input: {self.input_data}"
+
+
+class SecurityAuditorAgent(BaseAgent):
+    name: str = Field(default="Auditor de Seguridad Black")
+    system_prompt: str = Field(default=SECURITY_AUDITOR_PROMPT)
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"Executed {self.name} on input: {self.input_data}"
+
+
+class SalesSiloArchitectAgent(BaseAgent):
+    name: str = Field(default="Arquitecto de Silos de Ventas")
+    system_prompt: str = Field(default=BUSINESS_STRATEGIST_PROMPT)
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"Executed {self.name} on input: {self.input_data}"
+
+
+class LegalAuditorAgent(BaseAgent):
+    name: str = Field(default='AGENTE AUDITOR LEGAL "SENTINEL"')
+    system_prompt: str = Field(default=LEGAL_AUDITOR_PROMPT)
+
+    @model_validator(mode='after')
+    def validate_input(self) -> 'LegalAuditorAgent':
+        lower_input = self.input_data.lower()
+        if "contrato" not in lower_input and "legal" not in lower_input:
+            raise ValueError("ERROR DE INGESTA: Solo proceso documentos legales para auditoría.")
+        return self
+
+    async def execute(self) -> str:
+        # Simulate execution
+        await asyncio.sleep(0.1)
+        return f"Executed {self.name} on input: {self.input_data}"
+
+
+async def main():
+    parser = argparse.ArgumentParser(description="Protocolo Genesis V2 CLI")
+    parser.add_argument(
+        "--agent",
+        choices=[
+            "context",
+            "security",
+            "business",
+            "legal"],
+        required=True,
+        help="Agent to execute")
+    parser.add_argument(
+        "--input",
+        required=True,
+        help="Input data for the agent")
+
+    args = parser.parse_args()
+
+    agent_map = {
+        "context": ContextEngineeringAgent,
+        "security": SecurityAuditorAgent,
+        "business": SalesSiloArchitectAgent,
+        "legal": LegalAuditorAgent
+    }
+
+    AgentClass = agent_map[args.agent]
+
+    try:
+        agent = AgentClass(input_data=args.input)
+        result = await agent.execute()
+        # Ensure purely technical and functional output per protocol
+        # 0x0_MIN_EXEC_ENGINE
+        print(result)
+    except ValidationError as e:
+        for error in e.errors():
+            msg = error.get("msg", "")
+            if msg.startswith("Value error, "):
+                print(msg[len("Value error, "):])
+            else:
+                print(msg)
+        sys.exit(1)
+    except Exception as e:
+        print(str(e))
+        sys.exit(1)
+
+if __name__ == "__main__":
+    if "pytest" not in sys.argv[0]:
+        asyncio.run(main())
