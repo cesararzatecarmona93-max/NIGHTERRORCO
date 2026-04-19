@@ -49,7 +49,7 @@ async def main():
         for error in e.errors():
             msg = error.get("msg", "")
             if msg.startswith("Value error, "):
-                print(msg[len("Value error, "):])
+                print(msg.removeprefix("Value error, "))
             else:
                 print(msg)
         sys.exit(1)
