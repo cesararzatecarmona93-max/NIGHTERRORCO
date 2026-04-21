@@ -48,10 +48,7 @@ async def main():
     except ValidationError as e:
         for error in e.errors():
             msg = error.get("msg", "")
-            if msg.startswith("Value error, "):
-                print(msg[len("Value error, "):])
-            else:
-                print(msg)
+            print(msg.removeprefix("Value error, "))
         sys.exit(1)
     except Exception as e:
         print(str(e))
