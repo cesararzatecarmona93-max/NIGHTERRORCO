@@ -11,12 +11,11 @@ import json
 import logging
 import os
 import re
-import time
 from datetime import datetime, timezone
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any
 from concurrent.futures import ThreadPoolExecutor
 
-from fastapi import FastAPI, Request, HTTPException, Security, Depends
+from fastapi import FastAPI, Request, HTTPException, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 from aiogoogle import Aiogoogle
@@ -33,6 +32,7 @@ logger = logging.getLogger("L2C_Bridge")
 # Logging forense inmutable (LFPDPPP)
 AUDIT_LOG_FILE = os.getenv("AUDIT_LOG_PATH", "forensic_audit.log")
 
+
 class AuditLogEntry(BaseModel):
     timestamp: str
     action: str
@@ -41,6 +41,7 @@ class AuditLogEntry(BaseModel):
     operation_hash: str
     previous_hash: str
     payload_digest: str
+
 
 class ForensicAuditor:
     """Implementa una cadena de hashes inmutable para auditoría forense."""
@@ -75,13 +76,14 @@ class ForensicAuditor:
 
         # Escritura persistente (Append-Only)
         with open(AUDIT_LOG_FILE, "a") as f:
-            f.write(entry.json() + "\n")
+            f.write(entry.model_dump_json() + "\n")
 
         cls._last_hash = current_hash
         logger.info(f"Audit log entry created: {current_hash[:8]}... Action: {action}")
         return current_hash
 
 # --- WRAPPERS DE LÓGICA (MODO LAZARUS) ---
+
 
 class LazarusWrapper:
     """Encapsula funciones síncronas/heredadas en hilos asíncronos."""
@@ -97,6 +99,7 @@ class LazarusWrapper:
         return await loop.run_in_executor(self.executor, sync_func, *args, **kwargs)
 
 # --- PROCESADOR DE COMANDOS (EDIT TRICK) ---
+
 
 def edit_trick_processor(sed_commands: str) -> List[Dict[str, Any]]:
     """
@@ -129,6 +132,7 @@ def edit_trick_processor(sed_commands: str) -> List[Dict[str, Any]]:
     return requests
 
 # --- PUENTE DE GOOGLE WORKSPACE ---
+
 
 class GWorkspaceBridge:
     """Gestor asíncrono de interacciones con Google Docs, Sheets y Drive."""
@@ -212,6 +216,7 @@ class GWorkspaceBridge:
             )
             return update_response
 
+
 # --- API ENDPOINT (FASTAPI) ---
 
 app = FastAPI(
@@ -219,9 +224,11 @@ app = FastAPI(
     description="Nodo de alto rendimiento para automatización avanzada y cumplimiento LFPDPPP."
 )
 
+
 @app.on_event("startup")
 async def startup_event():
     logger.info("Puente L2C iniciado. Listo para recibir webhooks de n8n.")
+
 
 @app.post("/v1/process")
 async def process_webhook(
