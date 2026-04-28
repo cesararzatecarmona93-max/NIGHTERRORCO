@@ -15,7 +15,6 @@ def test_context_engineering_agent_init():
     assert "System Vector" in agent.system_prompt or "SYSVEC" in agent.system_prompt or "SysVec" in agent.system_prompt
 
 
-@pytest.mark.asyncio
 async def test_context_engineering_agent_execute():
     agent = ContextEngineeringAgent(input_data="test input")
     result = await agent.execute()
@@ -29,7 +28,6 @@ def test_security_auditor_agent_init():
     assert "OWASP" in agent.system_prompt
 
 
-@pytest.mark.asyncio
 async def test_security_auditor_agent_execute():
     agent = SecurityAuditorAgent(input_data="test input")
     result = await agent.execute()
@@ -42,7 +40,6 @@ def test_sales_silo_architect_agent_init():
     assert "Pricing" in agent.system_prompt
 
 
-@pytest.mark.asyncio
 async def test_sales_silo_architect_agent_execute():
     agent = SalesSiloArchitectAgent(input_data="test input")
     result = await agent.execute()
@@ -61,7 +58,6 @@ def test_legal_auditor_agent_init_invalid():
     assert "ERROR DE INGESTA" in str(exc_info.value)
 
 
-@pytest.mark.asyncio
 async def test_legal_auditor_agent_execute():
     agent = LegalAuditorAgent(input_data="Este es un contrato valido")
     result = await agent.execute()
