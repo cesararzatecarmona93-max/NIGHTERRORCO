@@ -55,10 +55,11 @@ def test_legal_auditor_agent_init_valid():
 
 
 def test_legal_auditor_agent_init_invalid():
-    with pytest.raises(ValidationError) as exc_info:
+    try:
         LegalAuditorAgent(input_data="Un documento cualquiera")
-
-    assert "ERROR DE INGESTA" in str(exc_info.value)
+        assert False, "Expected ValidationError was not raised"
+    except ValidationError as exc_info:
+        assert "ERROR DE INGESTA" in str(exc_info)
 
 
 @pytest.mark.asyncio
