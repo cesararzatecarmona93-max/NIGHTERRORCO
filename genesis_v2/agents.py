@@ -16,7 +16,9 @@ class BaseAgent(BaseModel):
     input_data: str
 
     async def execute(self) -> str:
-        raise NotImplementedError("Subclasses must implement the execute method")
+        raise NotImplementedError(
+            "Subclasses must implement the execute method"
+        )
 
 
 class ContextEngineeringAgent(BaseAgent):
@@ -26,7 +28,10 @@ class ContextEngineeringAgent(BaseAgent):
     async def execute(self) -> str:
         # Simulate execution
         await asyncio.sleep(0.1)
-        return f"[SysVec: 0xAetherShadowUnbreakable] Executed {self.name} on input: {self.input_data}"
+        return (
+            f"[SysVec: 0xAetherShadowUnbreakable] Executed {self.name} "
+            f"on input: {self.input_data}"
+        )
 
 
 class SecurityAuditorAgent(BaseAgent):
@@ -57,7 +62,10 @@ class LegalAuditorAgent(BaseAgent):
     def validate_input(self) -> 'LegalAuditorAgent':
         lower_input = self.input_data.lower()
         if "contrato" not in lower_input and "legal" not in lower_input:
-            raise ValueError("ERROR DE INGESTA: Solo proceso documentos legales para auditoría.")
+            raise ValueError(
+                "ERROR DE INGESTA: Solo proceso documentos legales para "
+                "auditoría."
+            )
         return self
 
     async def execute(self) -> str:
